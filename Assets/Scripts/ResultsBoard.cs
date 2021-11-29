@@ -1,18 +1,24 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ResultsBoard : MonoBehaviour
 {
     [SerializeField] private Transform Car;
     [SerializeField] private Transform MainUI;
     [SerializeField] private Transform ResultsBoardUI;
+    [SerializeField] private Transform ResultsBoardUIGrid;
+    [SerializeField] private Transform ResultRecord;
+    private string savesDir;
 
-    
+
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
-        
+        savesDir = $"{Application.dataPath}/Saves";
     }
 
     // Update is called once per frame
@@ -23,15 +29,50 @@ public class ResultsBoard : MonoBehaviour
             if(MainUI.gameObject.activeSelf)
             {
                 MainUI.gameObject.SetActive(false);
-                Car.gameObject.SetActive(false);
+                Car.gameObject.GetComponent<VehicleControl>().enabled = false;
                 ResultsBoardUI.gameObject.SetActive(true);
+                PrintResultsOnBoard(GetResults());
             }
             else
             {
                 MainUI.gameObject.SetActive(true);
                 ResultsBoardUI.gameObject.SetActive(false);
-                Car.gameObject.SetActive(true);
+                Car.gameObject.GetComponent<VehicleControl>().enabled = true;
             }
         }
     }
+
+    private List<Result> GetResults()
+    {
+        List<Result> resultsList = new List<Result>();
+        Directory.GetFiles(savesDir);
+
+        foreach (var file in Directory.GetFiles(savesDir))
+        {
+            if(!file.Contains(".meta"))
+            {
+                var f = File.ReadAllText(file).Replace("\n", "").Replace("\r", "");
+                var s = f.Trim();
+                Debug.Log(f);
+                Debug.Log(s);
+                var js = JsonUtility.FromJson(s, typeof(Result)) as Result;
+                resultsList.Add(js);
+            }
+        }
+
+        return resultsList;
+    }
+
+    private void PrintResultsOnBoard(List<Result> results)
+    {
+        var record = Instantiate(ResultRecord);
+        record.parent = ResultsBoardUIGrid;
+
+        results.ForEach(x => {
+            var record = Instantiate(ResultRecord);
+            record.parent = ResultsBoardUIGrid;
+            record.GetComponent<Text>().text = $"{x.Date}: {x.ResultTime} seconds";
+        });
+    }
+
 }

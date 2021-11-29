@@ -7,10 +7,11 @@ public class StartRace : MonoBehaviour
     [SerializeField] private UnityEngine.UI.Text timer;
     private bool startFlag = false;
     private float time = 0f;
+    private int filesIndex = 0;
 
     void FixedUpdate()
     {
-        if(startFlag)
+        if (startFlag)
         {
             time += Time.fixedDeltaTime;
             timer.text = $"{time.ToString("n2")}";
@@ -27,9 +28,10 @@ public class StartRace : MonoBehaviour
         Debug.Log(other.name);
         startFlag = !startFlag;
 
-        if(time > 0)
+        if (time > 0)
         {
             SaveResults();
+            Debug.Log("Save Results");
         }
 
         time = 0f;
@@ -42,13 +44,9 @@ public class StartRace : MonoBehaviour
         resInst.ResultTime = $"{time}";
 
         string saveFileName = "Save";
-        string newSave = $"{saveFileName}0";
         string savesDir = $"{Application.dataPath}/Saves/";
-        for (int i = 0; File.Exists($"{savesDir}{newSave}"); i++)
-        {
-            newSave = $"{saveFileName}{i}";
-        }
+
         Directory.CreateDirectory(savesDir);
-        File.WriteAllLines($"{savesDir}{newSave}.save", new string[] { JsonUtility.ToJson(resInst, true) });
+        File.AppendAllLines($"{savesDir}{saveFileName}{filesIndex++}.save", new string[] { JsonUtility.ToJson(resInst, true) });
     }
 }
