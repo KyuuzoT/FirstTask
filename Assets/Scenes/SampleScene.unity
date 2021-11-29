@@ -329,6 +329,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 8255717417217523146, guid: 4d673038af048ad45ab213b9c251a0d7,
+        type: 3}
+      propertyPath: carSetting.carPower
+      value: 80
+      objectReference: {fileID: 0}
     - target: {fileID: 8255717417222674404, guid: 4d673038af048ad45ab213b9c251a0d7,
         type: 3}
       propertyPath: m_Volume
