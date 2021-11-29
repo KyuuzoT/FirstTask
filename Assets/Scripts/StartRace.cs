@@ -49,6 +49,6 @@ public class StartRace : MonoBehaviour
             newSave = $"{saveFileName}{i}";
         }
         Directory.CreateDirectory(savesDir);
-        File.WriteAllLines($"{savesDir}{newSave}.save", new string[] { JsonUtility.ToJson(resInst) });
+        File.WriteAllLines($"{savesDir}{newSave}.save", new string[] { JsonUtility.ToJson(resInst, true) });
     }
 }
