@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 public class WheelSkidmarks : MonoBehaviour {
 
+#pragma strict
+
 //@script RequireComponent(WheelCollider)//We need a wheel collider
 
 public GameObject skidCaller;//The parent oject having a rigidbody attached to it.
