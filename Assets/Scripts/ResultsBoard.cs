@@ -47,15 +47,13 @@ public class ResultsBoard : MonoBehaviour
         List<Result> resultsList = new List<Result>();
         Directory.GetFiles(savesDir);
 
-        foreach (var file in Directory.GetFiles(savesDir))
+        foreach (var saveFile in Directory.GetFiles(savesDir))
         {
-            if(!file.Contains(".meta"))
+            if(!saveFile.Contains(".meta"))
             {
-                var f = File.ReadAllText(file).Replace("\n", "").Replace("\r", "");
-                var s = f.Trim();
-                Debug.Log(f);
-                Debug.Log(s);
-                var js = JsonUtility.FromJson(s, typeof(Result)) as Result;
+                var recordsText = File.ReadAllText(saveFile);
+                Debug.Log(recordsText);
+                var js = JsonUtility.FromJson(recordsText, typeof(Result)) as Result;
                 resultsList.Add(js);
             }
         }
