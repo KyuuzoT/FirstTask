@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Linq;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
@@ -26,7 +27,7 @@ public class ResultsBoard : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            if(MainUI.gameObject.activeSelf)
+            if (MainUI.gameObject.activeSelf)
             {
                 MainUI.gameObject.SetActive(false);
                 Car.gameObject.GetComponent<VehicleControl>().enabled = false;
@@ -49,12 +50,16 @@ public class ResultsBoard : MonoBehaviour
 
         foreach (var saveFile in Directory.GetFiles(savesDir))
         {
-            if(!saveFile.Contains(".meta"))
+            if (!saveFile.Contains(".meta"))
             {
-                var recordsText = File.ReadAllText(saveFile);
+                var recordsText = File.ReadAllText(saveFile).Replace("\r\n", "").Replace("\n","").Split('}');
                 Debug.Log(recordsText);
-                var js = JsonUtility.FromJson(recordsText, typeof(Result)) as Result;
-                resultsList.Add(js);
+
+                foreach (var rec in recordsText.Where(x => !string.IsNullOrEmpty(x)))
+                {
+                    var fromJson = JsonUtility.FromJson($"{rec}}}", typeof(Result)) as Result;
+                    resultsList.Add(fromJson);
+                }
             }
         }
 
@@ -66,7 +71,8 @@ public class ResultsBoard : MonoBehaviour
         var record = Instantiate(ResultRecord);
         record.parent = ResultsBoardUIGrid;
 
-        results.ForEach(x => {
+        results.ForEach(x =>
+        {
             var record = Instantiate(ResultRecord);
             record.parent = ResultsBoardUIGrid;
             record.GetComponent<Text>().text = $"{x.Date}: {x.ResultTime} seconds";
