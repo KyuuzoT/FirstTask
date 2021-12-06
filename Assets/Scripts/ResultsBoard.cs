@@ -69,12 +69,11 @@ public class ResultsBoard : MonoBehaviour
     private void PrintResultsOnBoard(List<Result> results)
     {
         var record = Instantiate(ResultRecord);
-        record.parent = ResultsBoardUIGrid;
 
         results.ForEach(x =>
         {
             var record = Instantiate(ResultRecord);
-            record.parent = ResultsBoardUIGrid;
+            record.SetParent(ResultsBoardUIGrid);
             record.GetComponent<Text>().text = $"{x.Date}: {x.ResultTime} seconds";
         });
     }
