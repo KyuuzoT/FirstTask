@@ -44,7 +44,6 @@ public class ResultsBoard : MonoBehaviour
     private List<Result> GetResults()
     {
         List<Result> resultsList = new List<Result>();
-        Directory.GetFiles(savesDir);
 
         foreach (var saveFile in Directory.GetFiles(savesDir))
         {
@@ -52,11 +51,9 @@ public class ResultsBoard : MonoBehaviour
             {
                 var recordsText = File.ReadAllText(saveFile).Replace("\r\n", "").Replace("\n","").Split('}');
 
-                foreach (var rec in recordsText.Where(x => !string.IsNullOrEmpty(x)))
-                {
-                    var fromJson = JsonUtility.FromJson($"{rec}}}", typeof(Result)) as Result;
-                    resultsList.Add(fromJson);
-                }
+                resultsList.AddRange(recordsText
+                    .Where(x => !string.IsNullOrEmpty(x))
+                    .Select(rec => JsonUtility.FromJson($"{rec}}}", typeof(Result)) as Result));
             }
         }
 
