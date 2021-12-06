@@ -67,20 +67,9 @@ public class VehicleCamera : MonoBehaviour
 
     public void PoliceLightSwitch()
     {
-
-        if (!target.gameObject.GetComponent<PoliceLights>()) return;
-
         PLValue++;
 
         if (PLValue > 1) PLValue = 0;
-
-        if (PLValue == 1)
-            target.gameObject.GetComponent<PoliceLights>().activeLight = true;
-
-        if (PLValue == 0)
-            target.gameObject.GetComponent<PoliceLights>().activeLight = false;
-
-
     }
 
 
