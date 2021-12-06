@@ -18,20 +18,13 @@ public class StartRace : MonoBehaviour
         }
     }
 
-    private void OnTriggerExit(Collider other)
-    {
-        Debug.Log(other.name);
-    }
-
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log(other.name);
         startFlag = !startFlag;
 
         if (time > 0)
         {
             SaveResults();
-            Debug.Log("Save Results");
         }
 
         time = 0f;

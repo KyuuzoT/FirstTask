@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using System.Linq;
 using System.Collections.Generic;
 using System.IO;
@@ -53,7 +51,6 @@ public class ResultsBoard : MonoBehaviour
             if (!saveFile.Contains(".meta"))
             {
                 var recordsText = File.ReadAllText(saveFile).Replace("\r\n", "").Replace("\n","").Split('}');
-                Debug.Log(recordsText);
 
                 foreach (var rec in recordsText.Where(x => !string.IsNullOrEmpty(x)))
                 {
